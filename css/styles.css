@@ -1,0 +1,101 @@
+/* ========================================================
+   AURA RESTAURANT MENU - STYLES
+   Minimalist, Mobile-First, Performance-Driven
+   ======================================================== */
+
+/* Evitar parpadeos azules al pulsar en iOS/Android */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ocultar scrollbars manteniendo la funcionalidad táctil */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Truncado estricto a 1 sola línea */
+.truncate-1-line {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Animaciones suaves */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Estilo para las tarjetas del slider de promociones */
+.promo-card {
+  min-width: 82%;
+  scroll-snap-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .promo-card {
+    min-width: 70%;
+  }
+}
+
+/* Fila de plato táctil */
+.dish-row {
+  position: relative;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(231, 227, 216, 0.7);
+  transition: background-color 0.15s ease;
+}
+
+.dish-row:last-child {
+  border-bottom: none;
+}
+
+.dish-row:active {
+  background-color: rgba(244, 241, 234, 0.6);
+}
+
+/* Chips de categorías */
+.category-chip {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.category-chip.active {
+  background-color: #121212;
+  color: #ffffff;
+  border-color: #121212;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Bottom Sheet Modal Transitions */
+#dishModal.modal-open {
+  transform: translateY(0);
+}
+
+#modalBackdrop.backdrop-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Suavizado tipográfico */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AURA | Carta Digital & Experiencia Gastronómica</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Cormorant Garamond (Editorial) + Plus Jakarta Sans (UI moderna y legible) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#121212',
+              dark: '#1c1b18',
+              surface: '#fcfbf7',
+              surfaceAlt: '#f4f1ea',
+              border: '#e7e3d8',
+              muted: '#78756d',
+              accent: '#d9532f', // Acento cálido / terracotta inspirado en las cartas gourmet
+              accentDark: '#b83b1a',
+              badge: '#fbf4ee'
+            }
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-brand-surface text-brand-black font-sans antialiased selection:bg-brand-accent selection:text-white pb-12">
+
+  <!-- ======================================================== -->
+  <!-- 1. HEADER STICKY (Nombre del negocio a la izq, Lupa a la der) -->
+  <!-- ======================================================== -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-brand-surface/95 backdrop-blur-md border-b border-brand-border/60 transition-all duration-200">
+    <div class="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
+      <!-- Nombre del Negocio (Izquierda) -->
+      <a href="#" class="flex flex-col group">
+        <span class="font-serif text-2xl font-bold tracking-tight text-brand-black leading-none group-hover:text-brand-accent transition-colors">
+          AURA
+        </span>
+        <span class="text-[10px] uppercase tracking-[0.25em] text-brand-muted font-medium mt-0.5">
+          Cocina de Brasa
+        </span>
+      </a>
+
+      <!-- Acciones de Cabecera (Derecha: Lupa) -->
+      <div class="flex items-center gap-2">
+        <button id="searchToggleBtn" aria-label="Abrir buscador" class="w-10 h-10 rounded-full flex items-center justify-center text-brand-black hover:bg-brand-surfaceAlt active:scale-95 transition-all">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Barra de búsqueda desplegable al pulsar la Lupa -->
+    <div id="searchBarContainer" class="hidden max-w-md mx-auto px-4 pb-3 pt-1 animate-fadeIn">
+      <div class="relative flex items-center">
+        <i data-lucide="search" class="w-4 h-4 text-brand-muted absolute left-3.5 pointer-events-none"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Buscar por plato, ingrediente o alérgeno..." 
+          class="w-full bg-brand-surfaceAlt text-brand-black text-sm pl-10 pr-9 py-2.5 rounded-xl border border-brand-border focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all placeholder:text-brand-muted/70"
+          autocomplete="off"
+        >
+        <button id="clearSearchBtn" class="hidden absolute right-3 text-brand-muted hover:text-brand-black p-0.5">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto">
+    
+    <!-- ======================================================== -->
+    <!-- 2. SLIDER DE NOTICIAS O PROMOCIONES DEL DÍA              -->
+    <!-- ======================================================== -->
+    <section id="promoSliderSection" class="mt-4 mb-2">
+      <div class="px-4 flex items-center justify-between mb-2">
+        <span class="text-[11px] font-bold tracking-widest uppercase text-brand-muted">
+          Promociones & Novedades
+        </span>
+        <div id="sliderDots" class="flex items-center gap-1.5">
+          <!-- Dots generados dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Contenedor con Scroll Snap táctil horizontal -->
+      <div id="sliderContainer" class="flex gap-3 overflow-x-auto snap-x snap-mandatory px-4 pb-2 no-scrollbar scroll-smooth">
+        <!-- Renderizado dinámico desde JS con tarjetas llamativas -->
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 3. BARRA DE CATEGORÍAS FLOTANTE / STICKY                -->
+    <!-- ======================================================== -->
+    <nav id="categoryNav" class="sticky top-16 z-30 bg-brand-surface/95 backdrop-blur-md py-2.5 px-4 border-b border-brand-border/40">
+      <div id="categoryChips" class="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+        <!-- Píldoras generadas dinámicamente -->
+      </div>
+    </nav>
+
+    <!-- Estado de búsqueda vacía -->
+    <div id="noResultsNotice" class="hidden py-16 px-6 text-center">
+      <div class="w-12 h-12 mx-auto rounded-full bg-brand-surfaceAlt flex items-center justify-center text-brand-muted mb-3">
+        <i data-lucide="utensils" class="w-6 h-6"></i>
+      </div>
+      <h3 class="font-serif text-xl font-bold text-brand-black">No encontramos ese plato</h3>
+      <p class="text-xs text-brand-muted mt-1 max-w-xs mx-auto">Prueba buscando otro término o explora las categorías del menú.</p>
+      <button id="resetSearchBtn" class="mt-4 text-xs font-semibold text-brand-accent hover:underline">
+        Limpiar búsqueda
+      </button>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 4. CONTENEDOR DE LA CARTA (Títulos en grande sin imagen)  -->
+    <!-- ======================================================== -->
+    <div id="menuSectionsContainer" class="px-4 pt-4 pb-10 space-y-10">
+      <!-- Secciones generadas dinámicamente con:
+           - Título de sección en grande (Tipografía Serif imponente, sin imagen)
+           - Filas de platos: Título negrita (1 línea truncada) + Precio
+           - Descripción debajo (1 línea truncada)
+      -->
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 5. FOOTER DEL RESTAURANTE                                 -->
+    <!-- ======================================================== -->
+    <footer class="mt-8 border-t border-brand-border pt-10 pb-8 px-5 bg-brand-surfaceAlt/60 text-center">
+      <!-- Marca y Eslogan -->
+      <h2 class="font-serif text-3xl font-bold tracking-tight text-brand-black">AURA</h2>
+      <p class="text-xs text-brand-muted mt-1 font-medium">Cocina de Autor · Fuego & Materia Prima</p>
+      
+      <!-- Información Esencial -->
+      <div class="my-6 space-y-2.5 text-xs text-brand-black/80">
+        <div class="flex items-center justify-center gap-2">
+          <i data-lucide="map-pin" class="w-4 h-4 text-brand-accent flex-shrink-0"></i>
+          <span>Calle del Sol 24, Barrio Gourmet</span>
+        </div>
+        <div class="flex items-center justify-center gap-2">
+          <i data-lucide="clock" class="w-4 h-4 text-brand-accent flex-shrink-0"></i>
+          <span>Mar – Dom: 13:00 a 16:30 | 20:00 a 23:30</span>
+        </div>
+        <div class="flex items-center justify-center gap-2">
+          <i data-lucide="wifi" class="w-4 h-4 text-brand-accent flex-shrink-0"></i>
+          <span>WiFi Clientes: <strong>AURA_GUEST</strong> (clave: <em>fuego2026</em>)</span>
+        </div>
+      </div>
+
+      <!-- Botones de Acción Rápida (WhatsApp / Llamar / Instagram) -->
+      <div class="flex items-center justify-center gap-3 my-6">
+        <a href="https://wa.me/" target="_blank" rel="noopener" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-surface border border-brand-border text-xs font-semibold text-brand-black hover:border-brand-accent transition-colors shadow-sm">
+          <i data-lucide="message-circle" class="w-3.5 h-3.5 text-green-600"></i>
+          <span>Reservas WhatsApp</span>
+        </a>
+        <a href="tel:+34912345678" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-surface border border-brand-border text-xs font-semibold text-brand-black hover:border-brand-accent transition-colors shadow-sm">
+          <i data-lucide="phone" class="w-3.5 h-3.5 text-brand-accent"></i>
+          <span>Llamar</span>
+        </a>
+      </div>
+
+      <div class="text-[10px] text-brand-muted border-t border-brand-border/60 pt-4 mt-6">
+        <p>Precios con IVA incluido. Si presenta alergias o intolerancias alimentarias, consulte a nuestro personal.</p>
+        <p class="mt-1 font-medium">© 2026 AURA Restaurant · Menú Digital Mobile-First</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- 6. MODAL / BOTTOM SHEET DE DETALLE DE PLATO (ESTILO iOS) -->
+  <!-- ======================================================== -->
+  <div id="modalBackdrop" class="fixed inset-0 bg-brand-black/60 z-50 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-xs"></div>
+  
+  <div 
+    id="dishModal" 
+    class="fixed bottom-0 left-0 right-0 z-50 max-w-md mx-auto bg-brand-surface rounded-t-3xl shadow-2xl transform translate-y-full transition-transform duration-300 ease-out overflow-hidden max-h-[90vh] flex flex-col"
+    role="dialog" 
+    aria-modal="true"
+  >
+    <!-- Agarrador superior táctil (Pull bar) -->
+    <div class="w-full pt-3 pb-1 flex justify-center cursor-grab active:cursor-grabbing bg-brand-surface">
+      <div class="w-12 h-1.5 bg-brand-border rounded-full"></div>
+    </div>
+
+    <!-- Botón Cerrar flotante -->
+    <button id="closeModalBtn" aria-label="Cerrar modal" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-brand-surface/80 backdrop-blur-md border border-brand-border flex items-center justify-center text-brand-black active:scale-95 transition-transform">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <!-- Contenido scrolleable del plato -->
+    <div class="overflow-y-auto overscroll-contain pb-6">
+      <!-- Foto del Plato en HD -->
+      <div class="relative w-full h-56 bg-brand-surfaceAlt overflow-hidden">
+        <img id="modalDishImage" src="" alt="" class="w-full h-full object-cover transition-opacity duration-300 opacity-0">
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-black/40 to-transparent"></div>
+        <span id="modalDishCategory" class="absolute bottom-3 left-4 text-[10px] tracking-wider uppercase font-bold text-white bg-brand-black/60 backdrop-blur-md px-2.5 py-1 rounded-md">
+          CATEGORÍA
+        </span>
+      </div>
+
+      <div class="p-5">
+        <!-- Título completo y Precio -->
+        <div class="flex items-start justify-between gap-3 mb-2">
+          <h2 id="modalDishTitle" class="font-serif text-2xl font-bold text-brand-black leading-tight">
+            Nombre del Plato
+          </h2>
+          <span id="modalDishPrice" class="font-sans text-xl font-bold text-brand-accent whitespace-nowrap">
+            0,00 €
+          </span>
+        </div>
+
+        <!-- Descripción completa sin truncar -->
+        <p id="modalDishDesc" class="text-sm text-brand-muted leading-relaxed mt-2">
+          Descripción completa del plato con todos sus ingredientes, proceso de elaboración y texturas.
+        </p>
+
+        <!-- Etiquetas de Alérgenos & Características -->
+        <div class="mt-5 pt-4 border-t border-brand-border">
+          <span class="text-[11px] font-bold tracking-wider uppercase text-brand-muted block mb-2.5">
+            Información & Alérgenos
+          </span>
+          <div id="modalDishTags" class="flex flex-wrap gap-2">
+            <!-- Tags inyectados dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Botón de compartir o consultar -->
+        <div class="mt-6 pt-3">
+          <button id="modalShareBtn" class="w-full py-3.5 px-4 rounded-xl bg-brand-black text-white text-sm font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+            <i data-lucide="share-2" class="w-4 h-4"></i>
+            <span>Compartir este plato</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    // Inicializar iconos de Lucide
+    lucide.createIcons();
+  </script>
+</body>
+</html>
